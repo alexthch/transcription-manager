@@ -1,11 +1,13 @@
 import platform, subprocess, os, json, pprint
 
 DEFAULT_SETTINGS = {
-    'filetypes' : ['MOV', 'WAV'],
+    'filetypes' : ['MOV', 'WAV', 'MP4', 'MTS'],
     'ignore' : 'ignoretranscriptions.txt',
     'transcription_prefix' : 'transcription_',
     'last_transcribed_file' : '',
-    'index_filename': 'transcription_index.json'
+    'index_filename': 'transcription_index.json',
+    'whisper-model' : 'medium',
+    "custom-prompt": "Our company name is Asimut. Our product is a scheduling software for arts schools."
 }
 
 def print_settings(settings: dict[str, any]) -> None:

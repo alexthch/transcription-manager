@@ -4,6 +4,8 @@ import pprint
 from package.dependencies import install_all_dependencies, check_all_dependencies, check_if_cuda_is_available
 from package.commands import build_index
 from package.load_settings import load_settings, open_file_in_text_editor, print_settings
+from package.main.run_transcriptions import run_transcriptions
+#from package.main.run_transcriptions import 
 
 def main():
 
@@ -16,7 +18,7 @@ def main():
     # Main Parsers
     parser = argparse.ArgumentParser(description="Manage transcriptions")
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
-    index_parser = subparsers.add_parser('index', help='Tools for managing the file index tree')
+    index_parser = subparsers.add_parser('index', help='Scans everything in the current directory and maps the files to a json file')
     settings_parser = subparsers.add_parser('settings', help='tools for managing the settings')
     settings_parser.add_argument('-o', action='store_true', help='Open settings in texteditor')
     settings_parser.add_argument('-p', action='store_true', help='Print settings in texteditor')
@@ -26,10 +28,13 @@ def main():
     dependency_parser.add_argument('-i', action='store_true', help='Installs missing dependencies')
     dependency_parser.add_argument('-cuda', action='store_true', help='Checks if CUDA is available')
 
+    # Start transcription queueing and execution
+    whisper_parser = subparsers.add_parser('start', help='Starts the transcription of indexed files')
+    whisper_parser.add_argument('-cuda', action='store_true', help='Enables GPU acceleration for transcription')
     #Parse and switch arguments
     args = parser.parse_args()
 
-
+    
     if args.command == 'index':
         build_index.main(settings)
 
@@ -55,6 +60,9 @@ def main():
             
         elif not args.c and not args.i:
             dependency_parser.print_help()
+
+    elif args.command == 'start':
+        run_transcriptions(settings, args.cuda)
 
     else:
         parser.print_help()
