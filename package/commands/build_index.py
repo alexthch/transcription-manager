@@ -4,10 +4,12 @@ from typing import Any, Dict
 
 SETTINGS: Dict[str, any]
 
+SAVE_LOCATION: str
+
 def transcription_file_template(filename: str, transcribed: bool) -> Dict:
 
     template_file = {
-        'filename' : filename,
+        'filepath' : filename,
         'transcribed': transcribed,
     }
 
@@ -70,38 +72,41 @@ def build_directory_tree() -> Dict[str, Any]:
             
             extensionless_filename = filename.split(".")[0]
             transciption_filename = SETTINGS['transcription_prefix'] + extensionless_filename + ".txt"
+            full_relative_path = os.path.join(relative_path, filename)
 
             if transciption_filename in filenames:
-                list_of_files.append(transcription_file_template(filename, True))
-                print(f"Transcribed\t\t{filename}")
+
+                directory_tree[full_relative_path] = True
+                print(f"Transcribed\t\t{full_relative_path}")
+
             else:
-                list_of_files.append(transcription_file_template(filename, False))
-                print(f"Not transcribed\t\t{filename}")
-
-            
-
-        directory_tree[relative_path] = list_of_files
+                
+                directory_tree[full_relative_path] = False
+                print(f"Not transcribed\t\t{full_relative_path}")
 
     return directory_tree
 
 def save_file_index(file_index: Dict[str, any]):
 
-    global SETTINGS
+    global SAVE_LOCATION
 
     try:
-        with open(SETTINGS['index_filename'], 'w') as index_file:
-            json.dump(file_index, index_file, 4)
+        with open(SAVE_LOCATION, 'w') as index_file_path:
+            json.dump(file_index, index_file_path, indent=4)
 
-            print(f"Saved index file in settings folder, file name: {file_index}")
+            print(f"Saved index file in settings folder, location: {SAVE_LOCATION}")
 
-    except:
-        print("Error saving index file")
+    except Exception as e:
+        print(f"Error saving index file, error: {e}")
 
 def main(settings_init: Dict[str, Any]):
     
     global SETTINGS
+    global SAVE_LOCATION
 
     SETTINGS = settings_init
+
+    SAVE_LOCATION = 'transcription-settings\\' + SETTINGS['index_filename']
 
     print("Scanning folders...\nSTATUS\t\t\tFILENAME")
     

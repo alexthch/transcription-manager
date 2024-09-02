@@ -59,7 +59,7 @@ def install_all_dependencies() -> None:
         if not check_dependency(package):
             install_dependency(info['install_command'])
 
-def check_if_cuda_is_available() -> None:
+def check_if_cuda_is_available() -> bool:
 
     try:
         result = subprocess.run(['conda', 'list', 'pytorch'], capture_output=True, text=True, check=True)
@@ -69,10 +69,10 @@ def check_if_cuda_is_available() -> None:
             import torch
             if torch.cuda.is_available():
                 print('CUDA is available')
-
+                return True
             else:
                 print('CUDA is not available.')
-
+                return False
         else:
             print('PyTorch is not installed in the conda environment.')
             
