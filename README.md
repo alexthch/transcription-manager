@@ -8,4 +8,4 @@ To install:
    2. FFMPEG: "conda install -c conda-forge ffmpeg"
    3. WHISPER: "pip install -U openai-whisper"
 
-3. Install this package using the command "pip install git+https://<alexthch>:<personal_access_token>@github.com/alexthch/transcription-manager.git"
+3. Install this package using the command "pip install git+https://github.com/alexthch/transcription-manager.git@v1.0a"
