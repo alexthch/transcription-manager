@@ -31,3 +31,5 @@ Finally, start the transcription process by using
 
 add `-cuda` if you have CUDA enabled gpu
 `transcribe start -cuda`
+
+(You can check if CUDA is available with `transcribe dependency -cuda`
