@@ -15,14 +15,19 @@ Small program for managing transcriptions
 
 In conda prompt, activate the environment
 `conda activate "environment name"`
+
 then navigate to the main folder containing the files to be transcribed.
 Prompt should look like this:
 `(transcriber) C:\some-folder-with-many-files-and-subfolders>`
+
 Start by creating a settings file:
 `transcribe settings -o`
+
 Then call the command `index` to create a list of all the files to transcribe
 `transcribe index`
+
 Finally, start the transcription process by using
 `transcribe start`
+
 add `-cuda` if you have CUDA enabled gpu
 `transcribe start -cuda`
