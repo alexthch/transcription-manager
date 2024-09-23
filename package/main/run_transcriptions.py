@@ -101,25 +101,27 @@ def start_file_loop(queue: list) -> None:
     transcribe_model = whisper.load_model(MODEL, device=device)
     print('Model finished loading')
     print("\n"+"#"*80+"\n")
+    try:
+        for filepath in queue:
+            try:
+                print(f"Transcribing file: {filepath}")
+                result = transcribe_model.transcribe(
+                    audio=filepath,
+                    initial_prompt=custom_prompt q
+                    )
+                
+                transcription_filename: str = SETTINGS['transcription_prefix'] + os.path.splitext(os.path.basename(filepath))[0] + ".txt"
+                transcription_filepath: str = os.path.join(os.path.dirname(filepath), transcription_filename)
+                save_success: bool = save_transcription(result, transcription_filepath)
 
-    for filepath in queue:
-        try:
-            print(f"Transcribing file: {filepath}")
-            result = transcribe_model.transcribe(
-                audio=filepath,
-                initial_prompt=custom_prompt
-                )
-            
-            transcription_filename: str = SETTINGS['transcription_prefix'] + os.path.splitext(os.path.basename(filepath))[0] + ".txt"
-            transcription_filepath: str = os.path.join(os.path.dirname(filepath), transcription_filename)
-            save_success: bool = save_transcription(result, transcription_filepath)
+                if result and save_success:
+                    print(f"Successfully transcribed {filepath}")
 
-            if result and save_success:
-                print(f"Successfully transcribed {filepath}")
-
-        except:
-            print(f"###! Failed transcribing {filepath} !###")
-
+            except:
+                print(f"###! Failed transcribing {filepath} !###")
+    except KeyboardInterrupt:
+        print('\nStopped by user')
+        return None
     return None
 
 
@@ -139,11 +141,10 @@ def save_transcription(transcription: Dict[str, str | list], path: str) -> bool:
 
                 file.write(f"{formatted_start}\t{formatted_end}\t{text}\n")
 
-                return True
+            return True
             
     except:
 
         print(f"error saving {path}")
         return False
     
-
