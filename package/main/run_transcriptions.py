@@ -107,7 +107,7 @@ def start_file_loop(queue: list) -> None:
                 print(f"Transcribing file: {filepath}")
                 result = transcribe_model.transcribe(
                     audio=filepath,
-                    initial_prompt=custom_prompt q
+                    initial_prompt=custom_prompt
                     )
                 
                 transcription_filename: str = SETTINGS['transcription_prefix'] + os.path.splitext(os.path.basename(filepath))[0] + ".txt"
