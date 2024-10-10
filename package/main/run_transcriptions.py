@@ -1,4 +1,4 @@
-import os, whisper, warnings
+import os, whisper, warnings, torch
 
 from typing import Any, Dict
 from package.main.load_index import get_index
@@ -22,7 +22,7 @@ def run_transcriptions(setting_init: Dict[str, Any], enable_cuda: bool = False) 
 
     print_start_msg()
     
-    if enable_cuda and check_if_cuda_is_available():
+    if enable_cuda and torch.cuda.is_available():
         CUDA_ENABLED = enable_cuda
 
     print_session_settings() 
