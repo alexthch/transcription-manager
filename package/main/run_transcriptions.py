@@ -98,7 +98,7 @@ def start_file_loop(queue: list) -> None:
     device = "cuda" if CUDA_ENABLED else "cpu"
 
     print('Loading transcription-model...')
-    transcribe_model = whisper.load_model(MODEL, device=device, weights_only=True)
+    transcribe_model = whisper.load_model(MODEL, device=device)
     print('Model finished loading')
     print("\n"+"#"*80+"\n")
     try:
